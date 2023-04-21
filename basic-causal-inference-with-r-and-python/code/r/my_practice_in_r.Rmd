@@ -1,0 +1,27 @@
+---
+title: "my_practice_in_R"
+author: "Hisanori Tanaka"
+date: "2023-04-21"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Chapter01
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+### 1.9　simple exercise in R
+
+```{r sample, include=TRUE}
+x1 = c(63, 56, 51, 50, 42)
+y1 = c(63, 66, 61, 60, 52)
+df1 = data.frame(x1, y1)
+df1
+```
+
+
+
+
