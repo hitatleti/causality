@@ -11,8 +11,6 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Chapter01
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
 #### 1.9　simple exercise in R
 
 ```{r 1.9.1, include=TRUE}
@@ -38,10 +36,14 @@ summary(data01)
 
 #### 2.2　潜在的結果変数の枠組み：理論
 
-```{r 2.2, include=TRUE}
+```{r 2.2.1, include=TRUE}
 rm(list = ls())
 data02 = read.csv("../../data/data02.csv")
 attach(data02)
+head(data02)
+```
+
+```{r 2.2.2, include=TRUE}
 summary(data02)
 ```
 
@@ -168,12 +170,111 @@ SUTVAとは, 以下の2つの条件を満たすことである. <br>
 <li>個体に対する隠れた処置がない
 </div> <br>
 
+#### 3.8　共変量の役割
 
+<div style="display: inline-block; background: gray; padding: 3px 10px; color: #ffffff;">
+<strong> Def 3.8：無交絡性（unconfoundedness） </strong> </div>
+<div style="padding: 10px; border: 2px solid gray;"> 
+処置の割付けを表す変数$T_{i}$が, 潜在的結果変数の組$\{ \gamma_{i}(1), \gamma_{i}(0) \}$に依存しないことを条件付き独立または無交絡性という. 
+$$ \{ \gamma_{i}(1), \gamma_{i}(0) \} \perp T_{i} | \bf{X} $$ </div> <br>
 
+```{r 3.8.1, include=TRUE}
+rm(list = ls())
+data03 = read.csv("../../data/data03.csv")
+attach(data03)
+head(data03)
+```
 
+```{r 3.8.2, include=TRUE}
+summary(data03)
+```
 
+```{r 3.8.3, include=TRUE}
+mean(y3[t1==1]) - mean(y3[t1==0])
+mean(y1t) - mean(y0t)
+```
 
+「無視可能な割付け」とは, ナイーブな推定量によって文字通りに「割付けを無視して解析してよい」ということを意味するわけではない. 
 
+### Chapter05　回帰分析の基礎
+
+##### 5.2　数値例で理解する最小二乗法
+
+```{r 5.2.1, include=TRUE}
+rm(list = ls())
+y1 = c(40, 20, 50, 10)
+x1 = c(5, 1, 3, 2)
+```
+
+```{r 5.2.2, include=TRUE}
+yhat1 = 11.143 + 6.857 * x1
+e1 = y1 - yhat1
+print(yhat1)
+print(e1)
+```
+```{r 5.2.3, include=TRUE}
+yhat2 = 10.909 * x1
+e2 = y1 - yhat2
+print(yhat2)
+print(e2)
+```
+```{r 5.2.4, include=TRUE}
+# 残差の合計は常にゼロである（以下の例では, 丸め誤差のためにゼロにはなっていない）
+sum(e1)
+sum(e2)
+```
+
+```{r 5.2.5, include=TRUE}
+sum(e1^2)
+sum(e2^2)
+```
+
+```{r 5.2.6, include=TRUE}
+model1 = lm(y1 ~ x1)
+summary(model1)
+```
+
+##### 5.4　条件付き期待値としての回帰モデル
+
+```{r 5.4.1, include=TRUE}
+rm(list = ls())
+y1 = c(seq(9))
+x1 = c(rep(1, 3), rep(2, 3), rep(3, 3))
+mean(y1)
+```
+```{r 5.4.2, include=TRUE}
+model2 = lm(y1 ~ x1)
+summary(model2)
+```
+```{r 5.4.3, include=TRUE}
+plot(x1, y1)
+abline(model2)
+```
+
+### Chapter06　図で理解する重回帰モデルの基礎
+
+```{r 6.1.1, include=TRUE}
+rm(list = ls())
+data06 = read.csv("../../data/data06.csv")
+attach(data06)
+head(data06)
+```
+
+```{r 6.1.2, include=TRUE}
+summary(data06)
+```
+
+```{r 6.3.1, include=TRUE}
+summary(data06)
+```
+
+### Chapter07　最小二乗法による重回帰モデルの仮定と診断１
+
+```{r 7.2.1, include=TRUE}
+rm(list = ls())
+data07a = read.csv("../../data/data07a.csv")
+head(data07a)
+```
 
 
 
