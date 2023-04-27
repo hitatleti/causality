@@ -601,8 +601,8 @@ attach(data03)</code></pre>
 </div>
 <div id="chapter05-回帰分析の基礎" class="section level3">
 <h3>Chapter05　回帰分析の基礎</h3>
-<div id="数値例で理解する最小二乗法" class="section level5">
-<h5>5.2　数値例で理解する最小二乗法</h5>
+<div id="数値例で理解する最小二乗法" class="section level4">
+<h4>5.2　数値例で理解する最小二乗法</h4>
 <pre class="r"><code>rm(list = ls())
 y1 = c(40, 20, 50, 10)
 x1 = c(5, 1, 3, 2)</code></pre>
@@ -646,8 +646,8 @@ summary(model1)</code></pre>
 ## Multiple R-squared:  0.4114, Adjusted R-squared:  0.1171 
 ## F-statistic: 1.398 on 1 and 2 DF,  p-value: 0.3586</code></pre>
 </div>
-<div id="条件付き期待値としての回帰モデル" class="section level5">
-<h5>5.4　条件付き期待値としての回帰モデル</h5>
+<div id="条件付き期待値としての回帰モデル" class="section level4">
+<h4>5.4　条件付き期待値としての回帰モデル</h4>
 <pre class="r"><code>rm(list = ls())
 y1 = c(seq(9))
 x1 = c(rep(1, 3), rep(2, 3), rep(3, 3))
@@ -728,6 +728,505 @@ head(data07a)</code></pre>
 ## 4  2.911378  3.3741857 18.38211498 10.74226176  0.21073158 1.6808001
 ## 5  1.433601  1.2457329  4.19377483  1.27855799  0.06939565 0.9456810
 ## 6 -2.314442  1.2241580  0.09882134  1.25126874 -1.66264885 2.0065516</code></pre>
+<div id="仮定３誤差項の条件付き期待値ゼロ" class="section level4">
+<h4>7.3　仮定３：誤差項の条件付き期待値ゼロ</h4>
+<div id="不要なモデルを取り入れる問題" class="section level5">
+<h5>7.3.1　不要なモデルを取り入れる問題</h5>
+<pre class="r"><code>rm(list = ls())
+data07c = read.csv(&quot;../../data/data07c.csv&quot;)
+head(data07c)</code></pre>
+<pre><code>##            y1         x1          x2         x3
+## 1 -0.67395852 -0.7600421 -1.18751556  0.2094434
+## 2  0.40320144 -0.2091804 -0.59289399  1.0790914
+## 3  1.73275413 -0.4830352  0.05358555 -1.4506857
+## 4  3.21238925  1.6794651  0.69386915  1.3529309
+## 5 -0.03101438  0.3109033  0.13953087  0.3235217
+## 6  1.96618931 -0.7143339  0.80131038 -1.6589480</code></pre>
+<pre class="r"><code>summary(data07c)</code></pre>
+<pre><code>##        y1                x1                  x2                  x3          
+##  Min.   :-8.1670   Min.   :-3.013259   Min.   :-2.795193   Min.   :-3.39119  
+##  1st Qu.:-0.6056   1st Qu.:-0.719596   1st Qu.:-0.700067   1st Qu.:-0.68897  
+##  Median : 1.0544   Median :-0.009873   Median : 0.016571   Median :-0.04079  
+##  Mean   : 1.0114   Mean   :-0.008575   Mean   : 0.004854   Mean   :-0.02090  
+##  3rd Qu.: 2.7284   3rd Qu.: 0.703909   3rd Qu.: 0.707734   3rd Qu.: 0.62961  
+##  Max.   : 8.5708   Max.   : 4.043700   Max.   : 3.606328   Max.   : 3.65575</code></pre>
+<pre class="r"><code>model17 = lm(y1 ~ x1, data=data07c)
+model18 = lm(y1 ~ x1 + x2, data=data07c)
+model19 = lm(y1 ~ x1 + x2 + x3, data=data07c)
+summary(model17)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = y1 ~ x1, data = data07c)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -5.6774 -1.0027  0.0081  0.9991  4.2545 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  1.02772    0.04714   21.80   &lt;2e-16 ***
+## x1           1.90298    0.04507   42.23   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 1.491 on 998 degrees of freedom
+## Multiple R-squared:  0.6412, Adjusted R-squared:  0.6408 
+## F-statistic:  1783 on 1 and 998 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>summary(model18)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = y1 ~ x1 + x2, data = data07c)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -3.2427 -0.7140 -0.0121  0.7199  3.0591 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  1.01709    0.03287   30.95   &lt;2e-16 ***
+## x1           1.33356    0.03598   37.07   &lt;2e-16 ***
+## x2           1.18321    0.03641   32.50   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 1.039 on 997 degrees of freedom
+## Multiple R-squared:  0.8257, Adjusted R-squared:  0.8254 
+## F-statistic:  2362 on 2 and 997 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>summary(model19)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = y1 ~ x1 + x2 + x3, data = data07c)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -3.2427 -0.7139 -0.0122  0.7199  3.0592 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 1.0170949  0.0328904  30.924   &lt;2e-16 ***
+## x1          1.3332506  0.0741299  17.985   &lt;2e-16 ***
+## x2          1.1833344  0.0449052  26.352   &lt;2e-16 ***
+## x3          0.0003145  0.0661266   0.005    0.996    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 1.04 on 996 degrees of freedom
+## Multiple R-squared:  0.8257, Adjusted R-squared:  0.8252 
+## F-statistic:  1573 on 3 and 996 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>confint(model18)</code></pre>
+<pre><code>##                 2.5 %   97.5 %
+## (Intercept) 0.9525962 1.081587
+## x1          1.2629626 1.404155
+## x2          1.1117615 1.254657</code></pre>
+<pre class="r"><code>confint(model19)</code></pre>
+<pre><code>##                  2.5 %    97.5 %
+## (Intercept)  0.9525525 1.0816372
+## x1           1.1877819 1.4787193
+## x2           1.0952147 1.2714541
+## x3          -0.1294489 0.1300779</code></pre>
+</div>
+<div id="中間変数をモデルに取り入れる問題" class="section level5">
+<h5>7.3.2　中間変数をモデルに取り入れる問題</h5>
+<pre class="r"><code>rm(list = ls())
+data07d = read.csv(&quot;../../data/data07d.csv&quot;)
+head(data07d)</code></pre>
+<pre><code>##           y1         x1        x2
+## 1  0.7338017 -0.6264538  1.195284
+## 2  2.1813576  0.1836433  2.387397
+## 3  0.1843189 -0.8356286 -1.124221
+## 4  7.9175183  1.5952808  3.603653
+## 5  3.2488989  0.3295078  1.563657
+## 6 -1.6422130 -0.8204684 -1.893351</code></pre>
+<pre class="r"><code>summary(data07d)</code></pre>
+<pre><code>##        y1                x1                 x2         
+##  Min.   :-8.8865   Min.   :-3.00805   Min.   :-4.8032  
+##  1st Qu.:-0.2536   1st Qu.:-0.69737   1st Qu.:-0.2237  
+##  Median : 2.2271   Median :-0.03532   Median : 0.9982  
+##  Mean   : 2.1597   Mean   :-0.01165   Mean   : 0.9663  
+##  3rd Qu.: 4.5914   3rd Qu.: 0.68843   3rd Qu.: 2.1525  
+##  Max.   :16.8370   Max.   : 3.81028   Max.   : 8.0559</code></pre>
+<p><span class="math display">\[ X_{2} = 1.0 + 1.5 X_{1} + e_{1} \\
+   Y_{1} = 1.0 + 1.3X_{1} + 1.2X_{2} + e_{2} \]</span></p>
+<pre class="r"><code>model20 = lm(y1 ~ x1, data=data07d)
+model21 = lm(y1 ~ x1 + x2, data=data07d)
+summary(model20)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = y1 ~ x1, data = data07d)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -5.4917 -1.1509  0.0227  1.0709  4.1449 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  2.19646    0.05175   42.44   &lt;2e-16 ***
+## x1           3.15691    0.05003   63.10   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 1.636 on 998 degrees of freedom
+## Multiple R-squared:  0.7996, Adjusted R-squared:  0.7994 
+## F-statistic:  3982 on 1 and 998 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>summary(model21)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = y1 ~ x1 + x2, data = data07d)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -3.6151 -0.6564 -0.0223  0.6815  2.8132 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  0.99422    0.04488   22.16   &lt;2e-16 ***
+## x1           1.31602    0.05678   23.18   &lt;2e-16 ***
+## x2           1.22202    0.03135   38.97   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 1.031 on 997 degrees of freedom
+## Multiple R-squared:  0.9206, Adjusted R-squared:  0.9204 
+## F-statistic:  5779 on 2 and 997 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+</div>
+<div id="chapter08-最小二乗法による重回帰モデルの仮定と診断２" class="section level3">
+<h3>Chapter08　最小二乗法による重回帰モデルの仮定と診断２</h3>
+<div id="仮定４完全な多重共線性がないこと" class="section level4">
+<h4>8.1　仮定４：完全な多重共線性がないこと</h4>
+<div id="共変量における多重共線性" class="section level5">
+<h5>8.1.3　共変量における多重共線性</h5>
+<pre class="r"><code>rm(list = ls())
+data08a = read.csv(&quot;../../data/data08a.csv&quot;)
+head(data08a)</code></pre>
+<pre><code>##           y1          x1          x2         x3
+## 1  3.8016195  1.39197933  0.52457065  0.6188013
+## 2  0.2021981  0.04893406 -0.08316266 -0.4055734
+## 3 -3.2131227 -1.35807149 -1.88286753 -0.9750101
+## 4  2.4138383  0.28870823  1.23820023  1.3073624
+## 5  1.7377557 -0.54308006  0.45556387  0.1499126
+## 6  1.9892525  1.33177467 -0.72439893 -0.6030186</code></pre>
+<pre class="r"><code>summary(data08a)</code></pre>
+<pre><code>##        y1                x1                 x2                  x3          
+##  Min.   :-6.2428   Min.   :-2.03436   Min.   :-2.379012   Min.   :-2.25311  
+##  1st Qu.:-0.8457   1st Qu.:-0.81562   1st Qu.:-0.903935   1st Qu.:-0.75961  
+##  Median : 1.8347   Median : 0.02464   Median : 0.144648   Median : 0.13564  
+##  Mean   : 1.4165   Mean   : 0.04238   Mean   :-0.001048   Mean   : 0.04415  
+##  3rd Qu.: 3.8577   3rd Qu.: 0.77736   3rd Qu.: 0.810304   3rd Qu.: 0.79226  
+##  Max.   : 9.3524   Max.   : 2.88100   Max.   : 2.147412   Max.   : 2.30036</code></pre>
+<p><span class="math display">\[ Y_{1} = 1 + 1.3X_{1} + 1.2X_{2} +
+1.1X_{3} + e_{1} \]</span></p>
+<pre class="r"><code>model1a = lm(x1 ~ x2 + x3, data=data08a)
+rj2a = summary(model1a)$r.squared
+1 / (1 - rj2a)</code></pre>
+<pre><code>## [1] 1.631461</code></pre>
+<pre class="r"><code>model1b = lm(x2 ~ x1 + x3, data=data08a)
+rj2b = summary(model1b)$r.squared
+1 / (1 - rj2b)</code></pre>
+<pre><code>## [1] 12.00125</code></pre>
+<pre class="r"><code>model1c = lm(x3 ~ x1 + x2, data=data08a)
+rj2c = summary(model1c)$r.squared
+1 / (1 - rj2c)</code></pre>
+<pre><code>## [1] 11.8737</code></pre>
+<pre class="r"><code>model2 = lm(y1 ~ x1, data=data08a)
+model3 = lm(y1 ~ x1 + x2, data = data08a)
+model4 = lm(y1 ~ x1 + x3, data = data08a)
+model5 = lm(y1 ~ x1 + x2 + x3, data = data08a)
+summary(model2)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = y1 ~ x1, data = data08a)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -5.8902 -1.5076 -0.2163  1.6357  5.5158 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   1.2997     0.2210    5.88 5.68e-08 ***
+## x1            2.7561     0.2004   13.76  &lt; 2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 2.209 on 98 degrees of freedom
+## Multiple R-squared:  0.6588, Adjusted R-squared:  0.6553 
+## F-statistic: 189.2 on 1 and 98 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>summary(model3)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = y1 ~ x1 + x2, data = data08a)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -2.87281 -0.70527  0.03447  0.60384  2.55463 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   1.3607     0.1017   13.38   &lt;2e-16 ***
+## x1            1.3704     0.1171   11.70   &lt;2e-16 ***
+## x2            2.2070     0.1153   19.15   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 1.015 on 97 degrees of freedom
+## Multiple R-squared:  0.9286, Adjusted R-squared:  0.9271 
+## F-statistic:   631 on 2 and 97 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>summary(model4)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = y1 ~ x1 + x3, data = data08a)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -2.61725 -0.62287  0.06677  0.70602  1.96052 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  1.26132    0.09658   13.06   &lt;2e-16 ***
+## x1           1.37242    0.11073   12.39   &lt;2e-16 ***
+## x3           2.19754    0.10769   20.41   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.9649 on 97 degrees of freedom
+## Multiple R-squared:  0.9355, Adjusted R-squared:  0.9342 
+## F-statistic: 703.9 on 2 and 97 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>summary(model5)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = y1 ~ x1 + x2 + x3, data = data08a)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -2.19339 -0.63058 -0.04726  0.63897  2.16957 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  1.30274    0.09271  14.052  &lt; 2e-16 ***
+## x1           1.32302    0.10637  12.438  &lt; 2e-16 ***
+## x2           0.94942    0.28384   3.345  0.00118 ** 
+## x3           1.32925    0.27907   4.763 6.75e-06 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.9179 on 96 degrees of freedom
+## Multiple R-squared:  0.9423, Adjusted R-squared:  0.9405 
+## F-statistic: 522.2 on 3 and 96 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>library(car)</code></pre>
+<pre><code>## Loading required package: carData</code></pre>
+<pre class="r"><code>vif(model5)</code></pre>
+<pre><code>##        x1        x2        x3 
+##  1.631461 12.001252 11.873703</code></pre>
+</div>
+</div>
+<div id="仮定５誤差項の分散均一性" class="section level4">
+<h4>8.2　仮定５：誤差項の分散均一性</h4>
+<div id="不均一分散の診断" class="section level5">
+<h5>8.2.2　不均一分散の診断</h5>
+ブルーシュ・ペイガンの検定
+<ol>
+<li>
+通常の最小二乗法による推定
+</li>
+<li>
+残差を計算
+</li>
+<li>
+残差の2乗を左辺に,
+説明変数を右辺に置いた回帰モデルを通常の最小二乗法で推定
+</li>
+<li>
+帰無仮説
+</li>
+<li>
+ステップ3で推定したモデルの決定係数<span class="math inline">\(R_{bp}^{2}\)</span>を使って, LM統計量を<span class="math inline">\(nR_{bp}^{2}\)</span>を計算
+</li>
+<li>
+<span class="math inline">\(\chi^{2}\)</span>分布を用いてp値を計算
+</li>
+</ol>
+<pre class="r"><code>rm(list = ls())
+data08b = read.csv(&quot;../../data/data08b.csv&quot;)
+head(data08b)</code></pre>
+<pre><code>##           y1          y2         x1
+## 1  0.4828935 -0.20417459  0.9778186
+## 2 -0.4900982 -0.33480427 -0.2045091
+## 3 -0.8697552 -0.40071188 -0.7686044
+## 4  0.7745729  0.04613895 -0.8605026
+## 5 -0.8288997 -0.41444404 -0.5125012
+## 6 -1.5017233 -4.29564295  0.5840209</code></pre>
+<pre class="r"><code>summary(data08b)</code></pre>
+<pre><code>##        y1                y2                 x1           
+##  Min.   :-2.4949   Min.   :-8.17685   Min.   :-0.997053  
+##  1st Qu.:-0.5390   1st Qu.:-0.52864   1st Qu.:-0.477269  
+##  Median : 0.1584   Median :-0.02624   Median :-0.008905  
+##  Mean   : 0.1779   Mean   : 0.18978   Mean   : 0.012520  
+##  3rd Qu.: 0.8890   3rd Qu.: 0.79394   3rd Qu.: 0.525134  
+##  Max.   : 3.3866   Max.   :10.32879   Max.   : 0.997758</code></pre>
+<pre class="r"><code>model1a = lm(y1 ~ x1, data = data08b)
+model2a = lm(y2 ~ x1, data = data08b)
+summary(model1a)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = y1 ~ x1, data = data08b)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -2.6506 -0.6701 -0.0257  0.6407  3.1812 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  0.17143    0.03139   5.462 5.94e-08 ***
+## x1           0.51371    0.05472   9.388  &lt; 2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.9923 on 998 degrees of freedom
+## Multiple R-squared:  0.08114,    Adjusted R-squared:  0.08022 
+## F-statistic: 88.13 on 1 and 998 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>summary(model2a)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = y2 ~ x1, data = data08b)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -8.8749 -0.5680 -0.0069  0.5917  9.6243 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  0.18312    0.05735   3.193  0.00145 ** 
+## x1           0.53204    0.09999   5.321 1.27e-07 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 1.813 on 998 degrees of freedom
+## Multiple R-squared:  0.02759,    Adjusted R-squared:  0.02661 
+## F-statistic: 28.31 on 1 and 998 DF,  p-value: 1.274e-07</code></pre>
+<pre class="r"><code># ブルーシュ・ペイガンの検定
+resid2a = residuals(model2a)  # step2
+resid2b = resid2a^2   # step3
+model2b = lm(resid2b ~ x1, data = data08b)   # step3
+bp2 = summary(model2b)$r.squared * 1000   # step5
+pchisq(bp2, 1, lower.tail = FALSE)</code></pre>
+<pre><code>## [1] 6.194701e-42</code></pre>
+<pre class="r"><code># ブルーシュ・ペイガンの検定（lmtest, bptestを使用）
+library(lmtest)</code></pre>
+<pre><code>## Loading required package: zoo</code></pre>
+<pre><code>## 
+## Attaching package: &#39;zoo&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     as.Date, as.Date.numeric</code></pre>
+<pre class="r"><code>bptest(model2a)</code></pre>
+<pre><code>## 
+##  studentized Breusch-Pagan test
+## 
+## data:  model2a
+## BP = 184.09, df = 1, p-value &lt; 2.2e-16</code></pre>
+<pre class="r"><code>bptest(model2a)$p.value</code></pre>
+<pre><code>##           BP 
+## 6.194701e-42</code></pre>
+</div>
+<div id="不均一分散への対処法１加重最小二乗法" class="section level5">
+<h5>8.2.3　不均一分散への対処法１：加重最小二乗法</h5>
+<pre class="r"><code># 加重最小二乗法
+model5 = lm(y2 ~ x1, weights = 1 / exp(1.5 * x1), data = data08b)
+summary(model5)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = y2 ~ x1, data = data08b, weights = 1/exp(1.5 * x1))
+## 
+## Weighted Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -4.2607 -0.6495 -0.0255  0.6458  4.9442 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  0.16889    0.04262   3.963 7.93e-05 ***
+## x1           0.47480    0.06708   7.078 2.75e-12 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 1.185 on 998 degrees of freedom
+## Multiple R-squared:  0.0478, Adjusted R-squared:  0.04685 
+## F-statistic:  50.1 on 1 and 998 DF,  p-value: 2.751e-12</code></pre>
+実行可能一般化最小二乗法（FGLM: feasible generalized least squares）
+<ol>
+<li>
+通常の最小二乗法による推定
+</li>
+<li>
+残差を計算
+</li>
+<li>
+残差の2乗を計算
+</li>
+<li>
+step3で計算した残差の2乗の自然対数を計算
+</li>
+<li>
+step4で計算した結果を左辺に置き,
+説明変数を右辺に置いた回帰モデルを通常の最小二乗法で推定
+</li>
+<li>
+step5より, 予測値を計算
+</li>
+<li>
+step6の結果を指数変換したものを重みとして利用する
+</li>
+</ol>
+<pre class="r"><code># 実行可能一般化最小二乗法
+logresid2b = log(resid2b)
+model6 = lm(logresid2b ~ x1, data = data08b)
+hhat1 = predict(model6)
+hhat2 = exp(hhat1)
+model7 = lm(y2 ~ x1, weights = 1 / hhat2, data = data08b)
+summary(model7)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = y2 ~ x1, data = data08b, weights = 1/hhat2)
+## 
+## Weighted Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -4.9655 -1.2527 -0.0158  1.2804  5.8643 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  0.11808    0.04006   2.947  0.00328 ** 
+## x1           0.38348    0.05509   6.961  6.1e-12 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 1.883 on 998 degrees of freedom
+## Multiple R-squared:  0.04631,    Adjusted R-squared:  0.04535 
+## F-statistic: 48.46 on 1 and 998 DF,  p-value: 6.102e-12</code></pre>
+</div>
+<div id="不均一分散への対処法２不均一分散に頑健な標準誤差" class="section level5">
+<h5>8.2.4　不均一分散への対処法２：不均一分散に頑健な標準誤差</h5>
+<pre class="r"><code>model2a = lm(y2 ~ x1, data = data08b)
+e1 = resid(model2a)
+e2 = e1^2
+hensax1 = data08b$x1 - mean(data08b$x1)
+hensax2 = hensax1^2
+num = sum(hensax2 * e2)
+denom = (sum(hensax2))^2
+sqrt(num / denom)</code></pre>
+<pre><code>## [1] 0.1260066</code></pre>
+<pre class="r"><code>library(sandwich)
+sqrt(vcovHC(model2a, type=&quot;HC&quot;))</code></pre>
+<pre><code>##             (Intercept)         x1
+## (Intercept)  0.05585894 0.07942441
+## x1           0.07942441 0.12600660</code></pre>
+</div>
+</div>
+<div id="仮定６誤差項の正規性" class="section level4">
+<h4>8.3　仮定６：誤差項の正規性</h4>
+</div>
+</div>
+<div id="chapter09-交互作用項のある共分散分析" class="section level3">
+<h3>Chapter09　交互作用項のある共分散分析</h3>
 </div>
 </div>
 
